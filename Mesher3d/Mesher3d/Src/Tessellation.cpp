@@ -58,23 +58,14 @@ Face* Tessellation::addFace(Vertex * vertex1, Vertex * vertex2, Vertex * vertex3
 
 Tetra* Tessellation::addTetra(Vertex * vertex1, Vertex * vertex2, Vertex * vertex3, Vertex * vertex4)
 {
-	double vol = GeomTest::signedVolume(vertex1->coord, vertex2->coord, vertex3->coord, vertex4->coord);
-	if (GCore::isZero(vol))
-		return nullptr;
+	//double vol = GeomTest::signedVolume(vertex1->coord, vertex2->coord, vertex3->coord, vertex4->coord);
+	//if (GCore::isZero(vol))
+	//	return nullptr;
 
 	Face* face1 = addFace(vertex1, vertex2, vertex3);
 	Face* face2 = addFace(vertex1, vertex2, vertex4);
 	Face* face3 = addFace(vertex1, vertex3, vertex4);
 	Face* face4 = addFace(vertex2, vertex3, vertex4);
-
-	if ((face1->tetra[0] != nullptr && face1->tetra[1] != nullptr))
-		return nullptr;
-	if ((face2->tetra[0] != nullptr && face2->tetra[1] != nullptr))
-		return nullptr;
-	if ((face3->tetra[0] != nullptr && face3->tetra[1] != nullptr))
-		return nullptr;
-	if ((face4->tetra[0] != nullptr && face4->tetra[1] != nullptr))
-		return nullptr;
 
 	for (int i = 0; i < 2; i++)
 		for (int j = 0; j < 2; j++)
@@ -84,6 +75,22 @@ Tetra* Tessellation::addTetra(Vertex * vertex1, Vertex * vertex2, Vertex * verte
 						&& face1->tetra[i] == face2->tetra[j] && face2->tetra[j] == face3->tetra[k]
 						&& face3->tetra[k] == face4->tetra[l])
 						return face1->tetra[i];
+
+#ifndef _DEBUG
+	if ((face1->tetra[0] != nullptr && face1->tetra[1] != nullptr))
+		return nullptr;
+	if ((face2->tetra[0] != nullptr && face2->tetra[1] != nullptr))
+		return nullptr;
+	if ((face3->tetra[0] != nullptr && face3->tetra[1] != nullptr))
+		return nullptr;
+	if ((face4->tetra[0] != nullptr && face4->tetra[1] != nullptr))
+		return nullptr;
+#else
+	assert(!(face1->tetra[0] != nullptr && face1->tetra[1] != nullptr));
+	assert(!(face2->tetra[0] != nullptr && face2->tetra[1] != nullptr));
+	assert(!(face3->tetra[0] != nullptr && face3->tetra[1] != nullptr));
+	assert(!(face4->tetra[0] != nullptr && face4->tetra[1] != nullptr));
+#endif
 
 	Tetra* tetra = new Tetra(vertex1, vertex2, vertex3, vertex4, face4, face3, face2, face1);
 	mTetraset.emplace(tetra);
@@ -397,7 +404,7 @@ void Tessellation::locateTetras(const GCore::Sphere& sphere, Tetraset& outTetras
 		outTetraset.emplace(*it);
 }
 
-void Tessellation::writeToOff(const char* filname)
+void Tessellation::writeToOff(const char* filname)const
 {
 	std::ofstream file;
 	file.open(filname);

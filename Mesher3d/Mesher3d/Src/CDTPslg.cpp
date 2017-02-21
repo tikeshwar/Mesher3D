@@ -74,7 +74,7 @@ double CDTPslg::getLocalFeatureSize(Vertex* vertex)
 
 void CDTPslg::createProtectionBalls()
 {
-	double threshold = 30 * PI / 180.0;
+	double threshold = 90 * PI / 180.0;
 
 	auto vertices = mTess.getVertices();
 	for (auto vit = vertices.begin(); vit != vertices.end(); vit++)
@@ -118,110 +118,45 @@ bool CDTPslg::isEdgeProtected(Edge* edge)
 	Edgeset outEdges;
 	mEdgeGrid->getEdges(lijk.x, lijk.y, lijk.z, uijk.x, uijk.y, uijk.z, outEdges);
 
-	for (int i = 0; i < 2; i++)
-	{
-		for (auto it = edge->vertex[i]->edges.begin(); it != edge->vertex[i]->edges.end(); it++)
-			outEdges.erase(*it);
-	}
+	outEdges.insert(edge->vertex[0]->edges.begin(), edge->vertex[0]->edges.end());
+	outEdges.insert(edge->vertex[1]->edges.begin(), edge->vertex[1]->edges.end());
+	outEdges.erase(edge);
 
-	if (outEdges.empty())
-		return true;
-
-	//Edge *firstEdge = nullptr, *secondEdge = nullptr;
-	//double fminD = HUGE;
+	double closestd = HUGE;
+	Vec3d firstClosestPt, secondClosestPt;
+	bool found = false;
 	for (auto it = outEdges.begin(); it != outEdges.end(); it++)
 	{
-		double perpedicularD = center.shortestDistanceToLineSeg(
-			(*it)->vertex[0]->coord, (*it)->vertex[1]->coord);
+		for (int i = 0; i < 2; i++)
+		{
+			Vertex* vertex = (*it)->vertex[i];
+			if (vertex == edge->vertex[0] || vertex == edge->vertex[1])
+				continue;
 
-		if (perpedicularD < rad)
-			return false;
-
-		//if (perpedicularD < rad && perpedicularD < fminD)
-		//{
-		//	secondEdge = firstEdge;
-		//	firstEdge = *it;
-		//	fminD = perpedicularD;
-		//}
+			if (sphere.inside(vertex->coord))
+			{
+				found = true;
+				double dist = vertex->coord.perpendicularDistanceToLineSeg(edge->vertex[0]->coord, edge->vertex[1]->coord);
+				if (dist < closestd)
+				{
+					closestd = dist;
+					secondClosestPt = firstClosestPt;
+					firstClosestPt = vertex->coord;
+				}
+			}
+		}
 	}
 
-	//if (!secondEdge)
-	//	return true;
-
-	//Vec3d closestPt = center.closestPointToLineSeg(firstEdge->vertex[0]->coord, firstEdge->vertex[1]->coord);
-	//Vec3d circumCenter;
-	//double circumRadius;
-	//GeomTest::findCircumcircle3d(edge->vertex[0]->coord, edge->vertex[1]->coord, closestPt,
-	//	circumCenter, circumRadius);
-
-	//double distToSecondEdge = circumCenter.shortestDistanceToLineSeg(
-	//	secondEdge->vertex[0]->coord, secondEdge->vertex[1]->coord);
-	//if (GCore::isSmaller(distToSecondEdge, circumRadius))
-	//	return false;
+	if (found)
+	{
+		Vec3d tcenter;
+		double tradius;
+		GeomTest::findCircumcircle3d(edge->vertex[0]->coord, edge->vertex[1]->coord, firstClosestPt, tcenter, tradius);
+		if (GCore::isSmaller((secondClosestPt - center).magnitude(), tradius))
+			return false;
+	}
 
 	return true;
-
-	//Vertex* firstNearestVtx = nullptr, *secondNearestVtx = nullptr;
-	//Edge* firstNearestEdge = nullptr, *secondNearestEdge = nullptr;
-	//double fminD = HUGE;
-	//for (auto it = outEdges.begin(); it != outEdges.end(); it++)
-	//{
-	//	double perpedicularD = center.shortestDistanceToLineSeg(
-	//		(*it)->vertex[0]->coord, (*it)->vertex[1]->coord);
-
-	//	if (perpedicularD < fminD)
-	//	{
-	//		secondNearestEdge = firstNearestEdge;
-	//		firstNearestEdge = *it;
-	//		fminD = perpedicularD;
-	//	}
-
-	//	//for (int i = 0; i < 2; i++)
-	//	//{
-	//	//	Vertex* vertex = (*it)->vertex[i];
-	//	//	if (!sphere.inside(vertex->coord))
-	//	//		continue;
-
-	//	//	perpedicularD = vertex->coord.perpendicularDistanceToLineSeg(
-	//	//		edge->vertex[0]->coord, edge->vertex[1]->coord);
-	//	//	if (perpedicularD < fminD)
-	//	//	{
-	//	//		secondNearestVtx = firstNearestVtx;
-	//	//		firstNearestVtx = vertex;
-	//	//		fminD = perpedicularD;
-	//	//	}
-	//	//}
-	//}
-
-	//if (firstNearestVtx && secondNearestVtx)
-	//{
-	//	Vec3d circumCenter;
-	//	double circumRadius;
-	//	GeomTest::findCircumcircle3d(edge->vertex[0]->coord, edge->vertex[1]->coord, firstNearestVtx->coord,
-	//		circumCenter, circumRadius);
-
-	//	if (GCore::isSmaller((circumCenter - secondNearestVtx->coord).magnitudeSqr(),
-	//		circumRadius*circumRadius))
-	//		return false;
-	//}
-	//else if (firstNearestEdge && secondNearestEdge)
-	//{
-	//	Vec3d projectedPt = center.projectionOnLine(firstNearestEdge->vertex[0]->coord,
-	//		firstNearestEdge->vertex[1]->coord);
-
-	//	Vec3d circumCenter;
-	//	double circumRadius;
-	//	GeomTest::findCircumcircle3d(edge->vertex[0]->coord, edge->vertex[1]->coord, projectedPt,
-	//		circumCenter, circumRadius);
-
-	//	double ccToSecondNearest = circumCenter.shortestDistanceToLineSeg(secondNearestEdge->vertex[0]->coord,
-	//		secondNearestEdge->vertex[1]->coord);
-
-	//	if (GCore::isSmaller(ccToSecondNearest, circumRadius))
-	//		return false;
-	//}
-
-	//return true;
 }
 
 void CDTPslg::divideWeakEdges()

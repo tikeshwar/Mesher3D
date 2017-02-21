@@ -23,6 +23,23 @@ void Mesher2d::createDelaunay2D()
 	removeExternalTriangles();
 }
 
+void Mesher2d::getFacets(std::vector<GCore::Vec3i>& outFacets)
+{
+	std::unordered_map<Vertex*, int> v2iMap;
+
+	int i = 0;
+	for (auto it = mPslg.points.begin(); it != mPslg.points.end(); it++)
+	{
+		Vertex* vertex = mTess.findVertex(*it);
+		v2iMap.emplace(vertex, i++);
+	}
+
+	for (auto const face : mTess.triangles())
+	{
+		outFacets.push_back(GCore::Vec3i(v2iMap[face->vertex[0]], v2iMap[face->vertex[1]], v2iMap[face->vertex[2]]));
+	}
+}
+
 void Mesher2d::setUpGrid(const Box2d& box)
 {
 	Vec2i divs(10, 10);

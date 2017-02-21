@@ -4,7 +4,7 @@
 #include <limits>
 
 constexpr static double PI = 3.14159265359;
-constexpr static double TOL = std::numeric_limits<float>::epsilon();
+constexpr static double TOL = 1e8*std::numeric_limits<double>::epsilon();
 constexpr static double ZERO_TOL = TOL;
 
 namespace GCore

@@ -1,0 +1,25 @@
+﻿Build started 2/21/2017 1:47:37 PM.
+     1>Project "C:\Users\Tikeshwar\Source\Repos\Mesher3D\Mesher3d\Mesher3d\Mesher3d.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I.\Include /IC:\Users\Tikeshwar\Source\Repos\Mesher3D\Mesher3d\GeomCore\Include /IC:\Users\Tikeshwar\Source\Repos\Mesher3D\Mesher3d\Mesher2d\Include /Zi /nologo /W4 /WX /sdl /O1 /Oi /Oy /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\Mesher3d.pdb" /Gd /TP /analyze- /errorReport:prompt Src\Mesher3d.cpp Src\PointInsertion.cpp
+         Mesher3d.cpp
+         PointInsertion.cpp
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\Lib.exe /OUT:"C:\Users\Tikeshwar\Source\Repos\Mesher3D\Mesher3d\Release\Mesher3d.lib" /NOLOGO /LTCG Release\CDTPslg.obj
+         Release\Edge.obj
+         Release\EdgeGrid.obj
+         Release\Face.obj
+         Release\Helper.obj
+         Release\Parser.obj
+         Release\PointInsertion.obj
+         Release\Tessellation.obj
+         Release\Tetra.obj
+         Release\TetraGrid.obj
+         Release\Mesher3d.obj
+         Release\Vertex.obj
+         Mesher3d.vcxproj -> C:\Users\Tikeshwar\Source\Repos\Mesher3D\Mesher3d\Release\Mesher3d.lib
+     1>Done Building Project "C:\Users\Tikeshwar\Source\Repos\Mesher3D\Mesher3d\Mesher3d\Mesher3d.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:06.32

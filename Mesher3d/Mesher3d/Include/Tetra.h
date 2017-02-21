@@ -43,6 +43,8 @@ namespace M3d
 		
 		GCore::GeomTest::Pos isInsideCircumsphere(const GCore::Vec3d& point)const;
 
+		void getSurroundingTetras(Tetraset& outTetras);
+
 	public:
 		Vertex* vertex[4];
 		Face *face[4];

@@ -2,7 +2,7 @@
 
 #include <vector>
 #include "Defines.h"
-#include "Vec.h"
+#include "BBox.h"
 #include "Mat4x4.h"
 
 namespace GCore
@@ -12,13 +12,14 @@ namespace GCore
 	{
 	public:
 		PointInPolygon(const std::vector<Vec3d>& points)
-			:mPoints(points) 
+			:mPoints(points)
 		{
 			transformToXY();
 		}
 
 		bool inside(const Vec3d& point)const
 		{
+			//return wnPnPoly(point) != 0;
 			return orientTest(point) != 0;
 		}
 
@@ -43,6 +44,7 @@ namespace GCore
 
 	private:
 		std::vector<Vec3d> mPoints;
+		Box2d mBox;
 		Mat4x4d mXYMat;
 	};
 }

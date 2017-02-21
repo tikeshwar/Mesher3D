@@ -228,7 +228,7 @@ void Triangulation::getFacets(std::vector<GCore::Vec3i>& outFacets)
 
 	for (auto const face : mTriangleset)
 	{
-		outFacets.push_back(GCore::Vec3i(v2iMap[face->edge[0]->vertex[0]], v2iMap[face->edge[0]->vertex[1]], v2iMap[face->opposite(face->edge[0])]));
+		outFacets.push_back(GCore::Vec3i(v2iMap[face->vertex[0]], v2iMap[face->vertex[1]], v2iMap[face->vertex[2]]));
 	}
 }
 void Triangulation::writeToOff(const char* filname)

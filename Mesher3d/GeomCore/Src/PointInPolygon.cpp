@@ -14,21 +14,39 @@ void PointInPolygon::transformToXY()
 
 	// get the normal
 	Vec3d zAxis(0, 0, 1);
-	Vec3d norm = (mPoints[0] - mPoints[1]).cross(mPoints[1] - mPoints[2]);
-	norm.normalize();
-
-	Vec3d rotAxis = norm.cross(zAxis);
-	if (!isZero(rotAxis.magnitudeSqr()))
+	Vec3d norm = (mPoints[1] - mPoints[0]).cross(mPoints[2] - mPoints[0]);
+	if (GCore::isZero(norm.magnitudeSqr()))
 	{
-		rotAxis.normalize();
-		double rotAngle = acos(zAxis.dot(norm));
-		mXYMat = Mat4x4d::rotate(rotAngle, rotAxis.x, rotAxis.y, rotAxis.z);
+		size_t n = mPoints.size();
+		for (size_t i = 1; i < n; i++)
+		{
+			norm = (mPoints[(i + 1) % n] - mPoints[i]).cross(
+				mPoints[(i + 2) % n] - mPoints[i]);
+			if (!GCore::isZero(norm.magnitudeSqr()))
+				break;
+		}
+	}
+
+	if (!GCore::isZero(norm.magnitudeSqr()))
+	{
+		norm.normalize();
+
+		Vec3d rotAxis = norm.cross(zAxis);
+		if (!isZero(rotAxis.magnitudeSqr()))
+		{
+			rotAxis.normalize();
+			double rotAngle = acos(zAxis.dot(norm));
+			mXYMat = Mat4x4d::rotate(rotAngle, rotAxis.x, rotAxis.y, rotAxis.z);
+		}
 	}
 
 	Vec3d center = box.center();
 	mXYMat = mXYMat*Mat4x4d::translate(-center.x, -center.y, -center.z);
 	for (size_t i = 0; i < mPoints.size(); i++)
 		mPoints[i] = mXYMat.transform(mPoints[i]);
+
+	for (size_t i = 0; i < mPoints.size(); i++)
+		mBox.extend(mPoints[i].xy());
 }
 
 int PointInPolygon::cnPnPoly(const Vec3d& point)const
@@ -84,12 +102,71 @@ int PointInPolygon::wnPnPoly(const Vec3d& point)const
 int PointInPolygon::orientTest(const Vec3d& point)const
 {
 	Vec2d P = mXYMat.transform(point).xy();
+	if (!mBox.contains(P))
+		return 0;
+
+	Vec2d farpt = mBox.lower - mBox.diagonal();
+	Vec2d perturbedpt(0.000001, 0.0000001);
+
 	size_t n = mPoints.size();
-	double orient = GeomTest::orient2d(mPoints[0].xy(), mPoints[1].xy(), P);
-	for (size_t i = 1; i < n; i++) {
-		double o2d = GeomTest::orient2d(mPoints[i%n].xy(), mPoints[(i + 1) % n].xy(), P);
-		if (std::signbit(orient) != std::signbit(o2d))
-			return 0;
+
+	std::vector<Vec2d> xyPoints(n);
+	for (size_t i = 0; i < n; i++)
+	{
+		xyPoints[i] = mPoints[i].xy();
 	}
-	return 1;
+
+	size_t intersectionCount = 0;
+	for (size_t i = 0; i < n; i++)
+	{
+		Vec2d pi = xyPoints[i];
+		Vec2d pj = xyPoints[(i + 1) % n];
+
+		double o2dpi = GeomTest::orient2d(P, farpt, pi);
+		if (GCore::isZero(o2dpi))
+		{
+			if (pi == P)
+			{
+				return 0;
+			}
+			else
+			{
+				pi = pi + perturbedpt;
+				o2dpi = GeomTest::orient2d(P, farpt, pi);
+			}
+
+		}
+
+		double o2dpj = GeomTest::orient2d(P, farpt, pj);
+		if (GCore::isZero(o2dpj))
+		{
+			if (pj == P)
+			{
+				return 0;
+			}
+			else
+			{
+				pj = pj + perturbedpt;
+				o2dpj = GeomTest::orient2d(P, farpt, pj);
+			}
+
+		}
+
+		if (signbit(o2dpi*o2dpj))
+		{
+			double o2dP = GeomTest::orient2d(pi, pj, P);
+			if (GCore::isZero(o2dP))
+				//o2dP = GeomTest::orient2d(pi, pj, P + perturbedpt);
+				return 0;
+
+			double o2dfarpt = GeomTest::orient2d(pi, pj, farpt);
+			if (GCore::isZero(o2dfarpt))
+				//o2dfarpt = GeomTest::orient2d(pi, pj, farpt + perturbedpt);
+				continue;
+
+			if (signbit(o2dP*o2dfarpt))
+				intersectionCount++;
+		}
+	}
+	return intersectionCount % 2;
 }

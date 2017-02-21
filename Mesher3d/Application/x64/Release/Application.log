@@ -1,0 +1,18 @@
+﻿Build started 1/16/2017 11:26:17 AM.
+     1>Project "C:\Users\Tikeshwar\Documents\Visual Studio 2015\Projects\Mesher3d\Application\Application.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /I./Include /I"C:\Users\Tikeshwar\Documents\Visual Studio 2015\Projects\Mesher3d\GeomCore/Include" /I"C:\Users\Tikeshwar\Documents\Visual Studio 2015\Projects\Mesher3d\Mesher3d/Include" /I"C:\Users\Tikeshwar\Documents\Visual Studio 2015\Projects\Mesher3d\Mesher2d/Include" /Zi /nologo /W4 /WX /sdl /O2 /Oi /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"x64\Release\\" /Fd"x64\Release\vc140.pdb" /Gd /TP /errorReport:prompt Src\main.cpp
+         main.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Tikeshwar\Documents\Visual Studio 2015\Projects\Mesher3d\Release\Application.exe" /NOLOGO /LIBPATH:"C:\Users\Tikeshwar\Documents\Visual Studio 2015\Projects\Mesher3d\Release\\" GeomCore.lib Mesher3d.lib Mesher2d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Tikeshwar\Documents\Visual Studio 2015\Projects\Mesher3d\Release\Application.pdb" /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Tikeshwar\Documents\Visual Studio 2015\Projects\Mesher3d\Release\Application.lib" /MACHINE:X64 x64\Release\main.obj
+         Generating code
+         209 of 2995 functions ( 7.0%) were compiled, the rest were copied from previous compilation.
+           137 functions were new in current compilation
+           161 functions had inline decision re-evaluated but remain unchanged
+         Finished generating code
+         Application.vcxproj -> C:\Users\Tikeshwar\Documents\Visual Studio 2015\Projects\Mesher3d\Release\Application.exe
+     1>Done Building Project "C:\Users\Tikeshwar\Documents\Visual Studio 2015\Projects\Mesher3d\Application\Application.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:11.22

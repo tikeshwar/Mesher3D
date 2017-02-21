@@ -1,0 +1,26 @@
+﻿Build started 2/20/2017 12:48:24 AM.
+     1>Project "C:\Users\Tikeshwar\Source\Repos\Mesher3D\Mesher3d\Mesher2d\Mesher2d.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I./Include /IC:\Users\Tikeshwar\Source\Repos\Mesher3D\Mesher3d\GeomCore/Include /ZI /nologo /W4 /WX /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\Mesher2d.pdb" /Gd /TP /analyze- /errorReport:prompt Src\Edge.cpp Src\Mesher2d.cpp Src\Parser2d.cpp Src\Triangle.cpp Src\TriangleGrid.cpp Src\Triangulation.cpp
+         Edge.cpp
+         Generating Code...
+         Compiling...
+         Triangulation.cpp
+         TriangleGrid.cpp
+         Triangle.cpp
+         Parser2d.cpp
+         Mesher2d.cpp
+         Generating Code...
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\Lib.exe /OUT:"C:\Users\Tikeshwar\Source\Repos\Mesher3D\Mesher3d\Debug\Mesher2d.lib" /NOLOGO Debug\Edge.obj
+         Debug\Mesher2d.obj
+         Debug\Parser2d.obj
+         Debug\Triangle.obj
+         Debug\TriangleGrid.obj
+         Debug\Triangulation.obj
+         Mesher2d.vcxproj -> C:\Users\Tikeshwar\Source\Repos\Mesher3D\Mesher3d\Debug\Mesher2d.lib
+     1>Done Building Project "C:\Users\Tikeshwar\Source\Repos\Mesher3D\Mesher3d\Mesher2d\Mesher2d.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:07.98

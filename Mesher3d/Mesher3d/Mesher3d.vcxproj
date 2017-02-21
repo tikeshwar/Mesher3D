@@ -171,7 +171,9 @@
     <ClInclude Include="Include\EdgeGrid.h" />
     <ClInclude Include="Include\Face.h" />
     <ClInclude Include="Include\Grid3D.h" />
+    <ClInclude Include="Include\Helper.h" />
     <ClInclude Include="Include\Parser.h" />
+    <ClInclude Include="Include\PointInsertion.h" />
     <ClInclude Include="Include\Pslg.h" />
     <ClInclude Include="Include\Tessellation.h" />
     <ClInclude Include="Include\Tetra.h" />
@@ -184,7 +186,9 @@
     <ClCompile Include="Src\Edge.cpp" />
     <ClCompile Include="Src\EdgeGrid.cpp" />
     <ClCompile Include="Src\Face.cpp" />
+    <ClCompile Include="Src\Helper.cpp" />
     <ClCompile Include="Src\Parser.cpp" />
+    <ClCompile Include="Src\PointInsertion.cpp" />
     <ClCompile Include="Src\Tessellation.cpp" />
     <ClCompile Include="Src\Tetra.cpp" />
     <ClCompile Include="Src\TetraGrid.cpp" />

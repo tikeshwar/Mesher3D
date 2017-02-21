@@ -26,7 +26,7 @@ Tetra::Tetra(Vertex* vertex1, Vertex* vertex2, Vertex* vertex3, Vertex* vertex4,
 	for (int i = 0; i < 4; i++)
 	{
 		if (face[i])
-			assert(face[i]->addTetra(this));
+			face[i]->addTetra(this);
 	}
 
 	for (int i = 0; i < 4; i++)
@@ -122,11 +122,32 @@ GeomTest::Pos Tetra::isInsideCircumsphere(const GCore::Vec3d& point)const
 {
 	double o3d = GeomTest::orient3d(vertex[0]->coord, vertex[1]->coord, vertex[2]->coord, vertex[3]->coord);
 	double insphere = GeomTest::inSphere(vertex[0]->coord, vertex[1]->coord, vertex[2]->coord, vertex[3]->coord, point);
+	if (GCore::isZero(o3d))
+	{
+		double A = GeomTest::unSignedArea3d(vertex[0]->coord, vertex[1]->coord, vertex[2]->coord);
+		double A1 = GeomTest::unSignedArea3d(vertex[0]->coord, vertex[1]->coord, vertex[3]->coord);
+		double A2 = GeomTest::unSignedArea3d(vertex[1]->coord, vertex[2]->coord, vertex[3]->coord);
+		double A3 = GeomTest::unSignedArea3d(vertex[2]->coord, vertex[0]->coord, vertex[3]->coord);
+
+		if (GCore::isEqual(A, A1 + A2 + A3))
+			return GeomTest::kInside;
+		return GeomTest::kOutside;
+	}
 	if (GCore::isZero(insphere))
 		return GeomTest::kOnBoundary;
 	else if (!(GCore::isPositive(insphere) ^ GCore::isPositive(o3d)))
 		return GeomTest::kInside;
 	else
 		return GeomTest::kOutside;
+}
+
+void Tetra::getSurroundingTetras(Tetraset& outTetras)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		Tetra* otherTera = face[i]->otherTetra(this);
+		if (otherTera)
+			outTetras.emplace(otherTera);
+	}
 }
 

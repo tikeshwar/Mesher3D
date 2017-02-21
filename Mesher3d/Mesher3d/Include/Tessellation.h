@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_set>
+#include <set>
 #include "Defines.h"
 #include "Vec.h"
 #include "Sphere.h"
@@ -31,9 +32,23 @@ namespace M3d
 			}
 		};
 
+		struct VertexLess {
+			bool operator() (const Vertex* v1, const Vertex* v2) const {
+				if (!GCore::isEqual(v1->coord.x, v2->coord.x))
+					return v1->coord.x < v2->coord.x;
+				else if (!GCore::isEqual(v1->coord.y, v2->coord.y))
+					return v1->coord.y < v2->coord.y;
+				else if (!GCore::isEqual(v1->coord.z, v2->coord.z))
+					return v1->coord.z < v2->coord.z;
+				else
+					return false;
+			}
+		};
+
 	public:
 
-		typedef std::unordered_set<Vertex*, VertexHash, VertexEqual> UniqueVertexset;
+		//typedef std::unordered_set<Vertex*, VertexHash, VertexEqual> UniqueVertexset;
+		typedef std::set<Vertex*, VertexLess> UniqueVertexset;
 
 		Tessellation() = default;
 		~Tessellation() = default;
@@ -68,7 +83,7 @@ namespace M3d
 		Face* findFace(Vertex* vertex1, Vertex* vertex2, Vertex* vertex3);
 		Tetra* findTetra(Vertex* vertex1, Vertex* vertex2, Vertex* vertex3, Vertex* vertex4);
 
-		Tetra* locateTetra(const GCore::Vec3d& point)
+		Tetra* locateTetra(const GCore::Vec3d& point)const
 		{
 			return mGrid->find(point);
 		}
@@ -99,7 +114,7 @@ namespace M3d
 
 		void clearTessellation();
 
-		void writeToOff(const char* filname);
+		void writeToOff(const char* filname)const;
 
 	private:
 		Tetraset mTetraset;

@@ -1,6 +1,10 @@
 #include <windows.h>
 #include <iostream>
 #include <ctime> 
+
+//#undef _ITERATOR_DEBUG_LEVEL
+//#define	_ITERATOR_DEBUG_LEVEL 0
+
 #include <vector> 
 
 #include "Defines.h"
@@ -35,10 +39,10 @@ int main()
 		//parser.parse("C:/Users/Tikeshwar/Desktop/polyfiles/example.poly");
 
 		M3d::OffParser parser;
-		parser.parse("C:/Users/Tikeshwar/Desktop/polyfiles/mushroom.off");
+		parser.parse("C:/Users/Tikeshwar/Desktop/polyfiles/cylinder.off");
 
 		//M3d::SMeshParser parser;
-		//parser.parse("C:/Users/Tikeshwar/Desktop/polyfiles/hinge.smesh");
+		//parser.parse("C:/Users/Tikeshwar/Desktop/polyfiles/cross.smesh");
 
 		//M3d::CDTPslg cdtpslg(parser.pslg);
 		//cdtpslg.createCDT();

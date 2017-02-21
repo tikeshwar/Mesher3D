@@ -21,10 +21,8 @@ namespace M2d
 
 		void createDelaunay2D();
 
-		void getFacets(std::vector<GCore::Vec3i>& outFacets)
-		{
-			mTess.getFacets(outFacets);
-		}
+		void getFacets(std::vector<GCore::Vec3i>& outFacets);
+
 		void writeToOff(const char* filename)
 		{
 			mTess.writeToOff(filename);
