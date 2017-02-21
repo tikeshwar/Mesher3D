@@ -65,8 +65,7 @@ void M3d::Mesher3d::createDelaunay3D()
 void M3d::Mesher3d::createSuperTetra()
 {
 	Box3d pslgBox = pslg.box;
-	Vec3d oriDiagonal = pslgBox.diagonal();
-
+	Vec3d oriDiagonal = pslgBox.diagonal()
 	Vec3d center = pslgBox.center();
 	double radius = oriDiagonal.magnitude() / 2.0;
 
